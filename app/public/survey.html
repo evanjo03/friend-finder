@@ -25,7 +25,7 @@
       <div class="text-center">
         <a href="/survey">
           <button class="btn btn-lg btn-primary">
-            <span class="fa fa-list-alt"></span>Take the Survey!</button>
+            <span class="fa fa-list-alt"></span> Take the Survey!</button>
         </a>
         <a href="/">
           <button class="btn btn-lg btn-default">
@@ -47,11 +47,11 @@
                 <input type="text" class="form-control" id="friend-name">
               </div>
               <div class="form-group">
-                <label for="friend-image">Link to a photo of you:</label>
+                <label for="friend-image">Link to a photo of you</label>
                 <input type="text" class="form-control" id="friend-image">
               </div>
               <div class="form-group">
-                <label for="q1">I prefer being outside than inside.</label>
+                <label for="q1">I prefer spending time outside more than inside.</label>
                 <select class="form-control custom-select" id="q1">
                   <option></option>
                   <option>1 (Do not agree)</option>
@@ -62,7 +62,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="q2">I like trying new foods.</label>
+                <label for="q2">I like tasting new foods.</label>
                 <select class="form-control" id="q2">
                   <option></option>
                   <option>1 (Do not agree)</option>
@@ -73,19 +73,8 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="q3">Aidan is a bear.</label>
+                <label for="q3">I enjoy meeting new people.</label>
                 <select class="form-control" id="q3">
-                  <option></option>
-                  <option>1 (Do not agree)</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5 (Agree)</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="q1">I like watching movies/TV.</label>
-                <select class="form-control" id="q1">
                   <option></option>
                   <option>1 (Do not agree)</option>
                   <option>2</option>
@@ -106,7 +95,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="q5">I prefer a stiff drink.</label>
+                <label for="q5">I like warm weather more than cold weather.</label>
                 <select class="form-control" id="q5">
                   <option></option>
                   <option>1 (Do not agree)</option>
@@ -128,7 +117,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="q7">I put cream and sugar in my coffee.</label>
+                <label for="q7">I drink my coffee black.</label>
                 <select class="form-control" id="q7">
                   <option></option>
                   <option>1 (Do not agree)</option>
@@ -150,7 +139,7 @@
                 </select>
               </div>
               <div class="form-group">
-                <label for="q9">The dress is gold, not blue.</label>
+                <label for="q9">My favorite language is python.</label>
                 <select class="form-control" id="q9">
                   <option></option>
                   <option>1 (Do not agree)</option>
@@ -183,7 +172,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">It's a match!</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">It's a match! Meet your new friend!</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -199,7 +188,7 @@
     <footer class="footer">
       <div class="container">
         <p>
-          <a href="/api/friends">API Friend Link</a> | <a href="https://github.com/">Github</a>
+          <a href="/api/friends" target="_blank">API Friend Link</a> | <a href="https://github.com/evanjo03/friend-finder" target="_blank">Github</a>
         </p>
       </div>
 
@@ -211,14 +200,12 @@
 
 </html>
 
-<!-- BELOW CODE IS CRITICAL. IT HANDLES HOW FORM DATA IS SENT TO OUR SERVER -->
-<script type="text/javascript">
-  $("#matchDiv").hide();
-  // In this code below we create the Front-end JavaScript which "POSTS" our form data to our express server.
-  // In essence, when the user hits submit, jQuery grabs all of the fields then sends a post request to our api
-  // Our api recognizes the route (/api/tables)... and then runs the associated code (found in api-routes.js).
-  // In this case the associated code "saves" the data to the table-data.js file or waitinglist-data.js file
 
+<script type="text/javascript">
+
+
+
+  //when the survey submit button is clicked
   $(".submit").on("click", function (event) {
 
     //input validation
@@ -245,14 +232,14 @@
         scores: scoreArray
       };
 
-      console.log(newFriend);
-
 
       $.post("/api/friends", newFriend,
         function (data) {
           if (data) {
+
             //clear any previous data in the modal
             $('.modal-body').empty();
+
             //add our information to the modal
             $('.modal-body').append($("<h3>").html(data.matchName));
             var imageObject = $("<img>").attr('src', data.matchPhoto);
@@ -262,12 +249,18 @@
             //toggle the modal
             $('#exampleModalCenter').modal('toggle');
 
-            // Clear the form when submitting
+            // Clear the form when submitting the form
+            $("#friend-name").val("");
+            $("#friend-image").val("");
+            for (i = 1; i < 11; i ++) {
+              $('#q' + i).val("");
+            };
 
           }
         });
     }
     else {
+      //if one or more of the questions is left blank
       event.preventDefault();
       alert("Please fill out an answer for all questions!")
     }
